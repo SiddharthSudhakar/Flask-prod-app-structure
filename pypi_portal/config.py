@@ -1,5 +1,5 @@
 from urllib import quote_plus
-from celery.schedules import crontab
+import os
 
 
 class HardCoded(object):
@@ -9,7 +9,7 @@ class HardCoded(object):
     extensions goes here.
     """
     ADMINS = ['me@me.test']
-    DB_MODELS_IMPORTS = ('pypi',)  # Like CELERY_IMPORTS in CeleryConfig.
+    BASE_DIR = os.path.abspath(os.path.dirname(__file__))
     ENVIRONMENT = property(lambda self: self.__class__.__name__)
     MAIL_EXCEPTION_THROTTLE = 24 * 60 * 60
     _SQLALCHEMY_DATABASE_DATABASE = 'pypi_portal'
@@ -17,27 +17,7 @@ class HardCoded(object):
     _SQLALCHEMY_DATABASE_PASSWORD = 'pypi_p@ssword'
     _SQLALCHEMY_DATABASE_USERNAME = 'pypi_service'
 
-
-class CeleryConfig(HardCoded):
-    """Configurations used by Celery only."""
-    CELERYD_PREFETCH_MULTIPLIER = 1
-    CELERYD_TASK_SOFT_TIME_LIMIT = 20 * 60  # Raise exception if task takes too long.
-    CELERYD_TASK_TIME_LIMIT = 30 * 60  # Kill worker if task takes way too long.
-    CELERY_ACCEPT_CONTENT = ['json']
-    CELERY_ACKS_LATE = True
-    CELERY_DISABLE_RATE_LIMITS = True
-    CELERY_IMPORTS = ('pypi',)
-    CELERY_RESULT_SERIALIZER = 'json'
-    CELERY_TASK_RESULT_EXPIRES = 10 * 60  # Dispose of Celery Beat results after 10 minutes.
-    CELERY_TASK_SERIALIZER = 'json'
-    CELERY_TRACK_STARTED = True
-
-    CELERYBEAT_SCHEDULE = {
-        'pypy-every-day': dict(task='pypi.update_package_list', schedule=crontab(hour='0')),
-    }
-
-
-class Config(CeleryConfig):
+class Config(Config):
     """Default Flask configuration inherited by all environments. Use this for development environments."""
     DEBUG = True
     TESTING = False
