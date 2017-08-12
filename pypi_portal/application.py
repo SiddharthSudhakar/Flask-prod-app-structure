@@ -9,7 +9,6 @@ from flask.ext.statics import Statics
 from yaml import load
 
 import pypi_portal as app_root
-from pypi_portal.blueprints import all_blueprints
 from pypi_portal.extensions import celery, db, mail, redis
 
 APP_ROOT_FOLDER = os.path.abspath(os.path.dirname(app_root.__file__))

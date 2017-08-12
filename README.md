@@ -1,4 +1,4 @@
-# Flask-Large-Application-Example
+# Flask-Medium-Application-Example
 
 PyPI Portal is a small demo app used as an example of a potentially large Flask application with several views and
 Celery tasks. This is how I structure my large Flask applications. In this README I'll explain my design choices with
@@ -48,7 +48,6 @@ Some features I've included in this demo application are:
 │  │  └─ view3/
 │  │
 │  ├─ application.py  # Flask create_app() factory.
-│  ├─ blueprints.py   # Define Flask blueprints and their URLs.
 │  ├─ config.py       # All configs for Flask, Celery, Prod, Dev, etc.
 │  ├─ extensions.py   # Instantiate SQLAlchemy, Celery, etc. Importable.
 │  └─ middleware.py   # Error handlers, template filters, other misc code.
@@ -63,20 +62,6 @@ Some features I've included in this demo application are:
 ```
 
 ## Design Choices
-
-### Blueprints
-
-The first thing you may notice are where blueprints are defined. Flask applications usually define their blueprints
-inside view modules themselves, and must be imported in or after `create_app()`. URLs for blueprints are usually set in
-or after `create_app()` as well.
-
-I've never liked defining blueprints in the views since according to pep8 the variables should be IN_ALL_CAPS (it's true
-that blueprints are still module-level in `blueprints.py` but since that file is 99% module-level variables I make a
-small exception to pep8 and keep it lower case), plus usually it's the only module-level variable in the file.
-
-Instead I define blueprints in `blueprints.py` and import them in both views and `application.py`. While I'm at it, I
-"centralize" URL and module specifications in blueprints.py instead of having those two pieces of information in views
-and `application.py`.
 
 ### Templates
 
